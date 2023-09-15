@@ -1,0 +1,112 @@
+@startuml
+
+' hide "E" circle
+hide circle
+
+' straight arrows
+' skinparam linetype ortho
+
+entity Passenger {
+  id: string
+  --
+
+  passport_series: string
+  passport_number: string
+  last_name: string
+  first_name: string
+  patronymic: string
+  birth_date: date
+
+  createdAt: date
+  deletedAt?: date
+}
+
+
+entity Plane {
+  id: string
+  --
+
+  side_number: number
+  number_of_seats: number
+  max_possible_distance: number
+  type_plane: string
+  year_of_release: date
+
+  createdAt: date
+  deletedAt?: date
+}
+
+
+entity Pilot {
+  id: string
+  --
+
+  passport_series: string
+  passport_number: string
+  last_name: string
+  first_name: string
+  patronymic: string
+  license_number: string
+
+  createdAt: date
+  deletedAt?: date
+}
+
+
+entity City {
+  id: string
+  --
+
+  name: string
+
+  createdAt: date
+  deletedAt?: date
+}
+
+
+entity Route {
+  id: string
+  --
+
+  id_city_from: City
+  id_city_to: City
+
+  createdAt: date
+  deletedAt?: date
+}
+Route }o--|| City
+
+entity Flight {
+  id: string
+  --
+
+  id_plane: Plane
+  id_pilot: Pilot
+  id_route: Route
+  time_takeoff: date
+  time_arrival: date
+  seat: string
+  price: number
+
+  createdAt: date
+  deletedAt?: date
+}
+Flight }o--|| Plane
+Flight }o--|| Pilot
+Flight }o--|| Route
+
+entity Ticket {
+  id: string
+  --
+
+  id_passenger: Passenger
+  id_flight: Flight
+  time_buy: date
+
+  createdAt: date
+  deletedAt?: date
+}
+Ticket }o--|| Passenger
+Ticket }o--|| Flight
+
+@enduml
