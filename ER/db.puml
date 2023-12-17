@@ -1,0 +1,91 @@
+@startuml
+
+' hide "E" circle
+hide circle
+
+' skinparam linetype ortho
+
+entity Director {
+  Director table
+  --
+  #id: string
+  --
+  *first_name: varchar(50)
+  *last_name: varchar(50)
+  *phone_number: varchar(20)
+  *email: varchar(100)
+  *position: varchar(50)
+  *createdAt: date
+  deletedAt?: date
+}
+
+entity Supplier {
+  Supplier table
+  --
+  #id: string
+  --
+  *first_name: varchar(50)
+  *last_name: varchar(50)
+  *phone_number: varchar(20)
+  *email: varchar(100)
+  *products: TEXT[]
+  *director_id: bigint(20) <<FK>>
+  *createdAt: date
+  deletedAt?: date
+}
+
+entity Cook {
+  Cook table
+  --
+  #id: string
+  --
+  *name: varchar(50)
+  *phone_number: varchar(20)
+  *preferred_cuisine: varchar(50)
+  *visited_restaurants: varchar(100)
+  *director_id: bigint(20) <<FK>>
+  *createdAt: date
+  deletedAt?: date
+}
+
+entity Visitor {
+  Visitor table
+  --
+  #id: string
+  --
+  *name: varchar(50)
+  *createdAt: date
+  deletedAt?: date
+}
+
+entity Menu {
+  Menu table
+  --
+  #id: string
+  --
+  *dish: varchar(50)
+  *price: decimal(5,2)
+  *cook_id: bigint(20) <<FK>>
+  createdAt: date
+  deletedAt?: date
+}
+
+entity Order {
+  Order table
+  --
+  #id: string
+  --
+  *visitor_id: bigint(20) <<FK>>
+  *menu_id: bigint(20) <<FK>>
+  *order_date: date
+  *status: varchar(50)
+  createdAt: date
+  deletedAt?: date
+}
+
+Director -- Supplier : Директор заказывает продукты через поставщика
+Director -- Cook : Директор нанимает повара
+Visitor ||--o{ Order : Посетитель делает заказ
+Menu ||--o{ Order : Посетитель выбирает блюдо из меню и добавляет в заказ
+Cook ||--o{ Menu : Повар готовит определенное блюдо из меню
+@enduml
